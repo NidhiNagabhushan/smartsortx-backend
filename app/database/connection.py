@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+import certifi
 import os
-import ssl
 
 load_dotenv()
 
@@ -13,11 +13,7 @@ client: AsyncIOMotorClient = None
 
 async def connect_db():
     global client
-    client = AsyncIOMotorClient(
-        MONGO_URI,
-        tls=True,
-        tlsAllowInvalidCertificates=True,
-    )
+    client = AsyncIOMotorClient(MONGO_URI, tlsCAFile=certifi.where())
     await client.admin.command("ping")
     print(f"✅ MongoDB connected — database: '{DB_NAME}'")
 
@@ -26,7 +22,6 @@ async def disconnect_db():
     global client
     if client:
         client.close()
-        print("🔌 MongoDB disconnected")
 
 
 def get_db():
