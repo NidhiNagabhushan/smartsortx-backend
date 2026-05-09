@@ -54,7 +54,7 @@ app.include_router(leaderboard.router, prefix="/leaderboard", tags=["Leaderboard
 @app.get("/", tags=["Health"])
 async def root():
     return {
-        "status": "🌱 SmartSort X is live!",
-        "docs":   "http://localhost:8000/docs",
-        "version": "1.0.0",
-    }
+    "status": "🌱 SmartSort X is live!",
+    "docs":   "https://smartsortx-backend.onrender.com/docs",
+    "version": "1.0.0",
+}
