@@ -13,9 +13,13 @@ client: AsyncIOMotorClient = None
 
 async def connect_db():
     global client
-    client = AsyncIOMotorClient(MONGO_URI, tlsCAFile=certifi.where())
-    await client.admin.command("ping")
-    print(f"✅ MongoDB connected — database: '{DB_NAME}'")
+    try:
+        client = AsyncIOMotorClient(MONGO_URI, tlsCAFile=certifi.where(), serverSelectionTimeoutMS=5000)
+        await client.admin.command("ping")
+        print(f"✅ MongoDB connected — database: '{DB_NAME}'")
+    except Exception as e:
+        print(f"⚠️ MongoDB connection failed: {e}")
+        print("⚠️ App starting without DB — some features may not work")
 
 
 async def disconnect_db():
